@@ -1,11 +1,11 @@
 # lider-ahenk-password-plugin
 
-password plugin for [Lider Ahenk project](http://www.liderahenk.org.tr).
+LDAP password plugin for [Lider Ahenk project](http://www.liderahenk.org.tr).
 
 |                   | **user-oriented** | **machine-oriented** |
 |:-----------------:|:-----------------:|:--------------------:|
-| **task plugin**   |        x          |           x          |
-| **policy plugin** |        x          |           x          |
+| **task plugin**   |         x         |                      |
+| **policy plugin** |                   |                      |
 
 ## How to Build
 
@@ -30,10 +30,6 @@ password plugin for [Lider Ahenk project](http://www.liderahenk.org.tr).
 1. Open Eclipse, go to 'Run --> Debug Configurations' menu and on 'Plugins' tab, select _lider-console-password_
 2. Click 'Add Required Plugins' button to add any plugins the project depend on.
 3. Finally you can run Lider Console as explained in its [documentation](https://github.com/Pardus-Kurumsal/lider-console/wiki/02.-Building-&-Running).
-
-#### Ahenk
-
-1. Create a soft link for _ahenk-password/password_ directory via `sudo ln -s lider-ahenk-password-plugin/ahenk-password/password/ /opt/ahenk/plugins`
 
 ## Contribution
 
