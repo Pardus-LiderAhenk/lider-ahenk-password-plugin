@@ -79,11 +79,9 @@
 
 	<modules>
 		<module>lider-password</module>
-		<module>lider-password-db</module>
 		<module>lider-password-feature</module>
 		<module>lider-console-password</module>
 		<module>lider-console-password-feature</module>
-		<module>ahenk-password</module>
 	</modules>
 
 	<build>

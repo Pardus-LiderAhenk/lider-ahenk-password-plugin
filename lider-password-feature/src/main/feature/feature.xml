@@ -30,7 +30,6 @@
 
     <feature name="lider-password-bundles" version="${project.version}">
 		<bundle>mvn:tr.org.liderahenk/lider-password/${project.version}</bundle>
-		<bundle>mvn:tr.org.liderahenk/lider-password-db/${project.version}</bundle>
 		<configfile finalname="/etc/tr.org.liderahenk.password.cfg">mvn:tr.org.liderahenk/lider-password/${project.version}/cfg</configfile>
     </feature>
 

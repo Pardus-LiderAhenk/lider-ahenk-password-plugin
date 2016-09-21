@@ -1,17 +1,17 @@
 package tr.org.liderahenk.password.commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import tr.org.liderahenk.lider.core.api.log.IOperationLogService;
-import tr.org.liderahenk.lider.core.api.persistence.IPluginDbService;
-import tr.org.liderahenk.lider.core.api.rest.requests.ITaskRequest;
-import tr.org.liderahenk.lider.core.api.plugin.IPluginInfo;
+import tr.org.liderahenk.lider.core.api.ldap.ILDAPService;
+import tr.org.liderahenk.lider.core.api.ldap.exceptions.LdapException;
 import tr.org.liderahenk.lider.core.api.plugin.ICommand;
+import tr.org.liderahenk.lider.core.api.plugin.IPluginInfo;
+import tr.org.liderahenk.lider.core.api.rest.requests.ITaskRequest;
 import tr.org.liderahenk.lider.core.api.service.ICommandContext;
 import tr.org.liderahenk.lider.core.api.service.ICommandResult;
 import tr.org.liderahenk.lider.core.api.service.ICommandResultFactory;
@@ -19,56 +19,50 @@ import tr.org.liderahenk.lider.core.api.service.enums.CommandResultStatus;
 
 public class PasswordCommand implements ICommand {
 
-	private Logger logger = LoggerFactory.getLogger(PasswordCommand.class);
-	
+	private static final Logger logger = LoggerFactory.getLogger(PasswordCommand.class);
 	private ICommandResultFactory resultFactory;
 	private IPluginInfo pluginInfo;
-	private IOperationLogService logService;
-	private IPluginDbService pluginDbService;
+	private ILDAPService ldapService;
 
 	@Override
 	public ICommandResult execute(ICommandContext context) {
-		
-		// TODO Modify parameter map before sending it to agent(s).
 		ITaskRequest req = context.getRequest();
 		Map<String, Object> parameterMap = req.getParameterMap();
-		parameterMap.put("dummy-param", "dummy-param-value");
-		
-		logger.debug("Parameter map updated.");
-		
-		// TODO Modify entity objects related to plugin command via DB service
-		//Object entity = new Object();
-		//pluginDbService.save(entity);
-		logger.debug("Entity saved successfully.");
-		
-		// TODO Modify result map to provide additional parameters or info before sending it back to console.
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("dummy-param", "dummy-param-value");
-		
-		logger.debug("Executed command, returning result.");
-		ICommandResult commandResult = resultFactory.create(CommandResultStatus.OK, new ArrayList<String>(), this, resultMap);
+		ArrayList<String> messages = new ArrayList<String>();
+		if (parameterMap.size() > 0 && parameterMap.containsKey("password")) {
+			List<String> dnList = req.getDnList();
+			for (String dn : dnList) {
+				try {
+					ldapService.updateEntry(dn, "userPassword", parameterMap.get("password").toString());
+				} catch (LdapException e) {
+					logger.error(e.getMessage(), e);
+					// TODO i18n - emre
+					messages.add("dn: " + dn + " LDAP kullanıcı şifresi değiştirilemedi...\r\n");
+				}
+			}
+		}
 
-		return commandResult;
+		if (messages.isEmpty()) {
+			return resultFactory.create(CommandResultStatus.OK, new ArrayList<String>(), this);
+		}
+		return resultFactory.create(CommandResultStatus.ERROR, new ArrayList<String>(), this);
 	}
 
 	@Override
 	public ICommandResult validate(ICommandContext context) {
-		// TODO Validate before command execution
 		return resultFactory.create(CommandResultStatus.OK, null, this, null);
 	}
 
 	@Override
 	public String getCommandId() {
-		// TODO Unique command ID used to match incoming REST requests to this Command class.
-		return "SAMPLE_COMMAND1";
+		return "CHANGE_LDAP_PASSWORD";
 	}
 
 	@Override
 	public Boolean executeOnAgent() {
-		// TODO True if we need to send a task to agent(s), false otherwise.
-		return true;
+		return false;
 	}
-	
+
 	@Override
 	public String getPluginName() {
 		return pluginInfo.getPluginName();
@@ -82,17 +76,17 @@ public class PasswordCommand implements ICommand {
 	public void setResultFactory(ICommandResultFactory resultFactory) {
 		this.resultFactory = resultFactory;
 	}
-	
+
 	public void setPluginInfo(IPluginInfo pluginInfo) {
 		this.pluginInfo = pluginInfo;
 	}
 
-	public void setLogService(IOperationLogService logService) {
-		this.logService = logService;
+	public ILDAPService getLdapService() {
+		return ldapService;
 	}
 
-	public void setPluginDbService(IPluginDbService pluginDbService) {
-		this.pluginDbService = pluginDbService;
+	public void setLdapService(ILDAPService ldapService) {
+		this.ldapService = ldapService;
 	}
-	
+
 }
