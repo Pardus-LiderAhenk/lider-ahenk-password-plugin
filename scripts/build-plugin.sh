@@ -16,20 +16,12 @@ cd "$PRJ_ROOT_PATH"
 mvn clean install -DskipTests
 echo "lider & lider-console modules built successfully."
 
-# Generate Ahenk package
-echo "Generating Ahenk package..."
-cd "$PRJ_ROOT_PATH"/ahenk-password
-dpkg-buildpackage -b
-echo "Generated Ahenk package"
-
 EXPORT_PATH=/tmp/lider-ahenk-password-plugin
 echo "Export path: $EXPORT_PATH"
 
 # Copy resulting files
 echo "Copying generated files to $EXPORT_PATH..."
 mkdir -p "$EXPORT_PATH"
-mv -f "$PRJ_ROOT_PATH"/*.deb "$EXPORT_PATH"
-mv -f "$PRJ_ROOT_PATH"/*.changes "$EXPORT_PATH"
 cp -rf "$PRJ_ROOT_PATH"/lider-password/target/lider-*.jar "$EXPORT_PATH"
 cp -rf "$PRJ_ROOT_PATH"/lider-console-password/target/lider-console-*.jar "$EXPORT_PATH"
 echo "Copied generated files."
