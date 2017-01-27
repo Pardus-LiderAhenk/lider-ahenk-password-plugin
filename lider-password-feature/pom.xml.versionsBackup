@@ -5,8 +5,9 @@
 	<parent>
 		<groupId>tr.org.liderahenk</groupId>
 		<artifactId>password</artifactId>
-		<version>1.0.0-beta</version>
+		<version>1.0.0</version>
 	</parent>
+
 	<artifactId>lider-password-feature</artifactId>
 	<url>http://www.liderahenk.org.tr</url>
 	<packaging>feature</packaging>
