@@ -163,7 +163,7 @@ public class PasswordTaskDialog extends DefaultTaskDialog {
 
 	@Override
 	public String getPluginVersion() {
-		return "1.0.0";
+		return PasswordConstants.PLUGIN_VERSION;
 	}
 
 }
