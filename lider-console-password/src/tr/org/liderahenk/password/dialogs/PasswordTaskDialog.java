@@ -158,7 +158,7 @@ public class PasswordTaskDialog extends DefaultTaskDialog {
 
 	@Override
 	public String getPluginName() {
-		return "password";
+		return PasswordConstants.PLUGIN_NAME;
 	}
 
 	@Override
