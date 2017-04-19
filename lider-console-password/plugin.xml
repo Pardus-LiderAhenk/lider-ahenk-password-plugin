@@ -67,7 +67,7 @@
      
      <extension
   		point="tr.org.liderahenk.liderconsole.core.taskmenu">
-  		<taskItem label="%command.task" pluginName="password" pluginVersion="1.0.0" taskCommandId="tr.org.liderahenk.liderconsole.commands.PasswordTask" />
+  		<taskItem label="%command.task" pluginName="password" pluginVersion="1.0.0" taskCommandId="tr.org.liderahenk.liderconsole.commands.PasswordTask" selectionType="multi" description="LDAP'ta tanımlı kullanıcıların parolalarını değiştirmeyi sağlayan eklentidir.&#xA;Parola değiştirmek için tıklayınız.."/>
   	</extension>
      
 </plugin>
