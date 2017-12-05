@@ -5,15 +5,15 @@ import java.util.Set;
 
 import org.eclipse.swt.widgets.Display;
 
-import tr.org.liderahenk.liderconsole.core.handlers.MultipleSelectionHandler;
-import tr.org.liderahenk.liderconsole.core.ldap.utils.LdapUtils;
 import tr.org.liderahenk.liderconsole.core.current.UserSettings;
 import tr.org.liderahenk.liderconsole.core.editors.LiderManagementEditor;
+import tr.org.liderahenk.liderconsole.core.handlers.MultipleSelectionHandler;
+import tr.org.liderahenk.liderconsole.core.ldap.utils.LdapUtils;
 import tr.org.liderahenk.liderconsole.core.widgets.Notifier;
-import tr.org.liderahenk.password.dialogs.PasswordTaskDialog;
+import tr.org.liderahenk.password.dialogs.AddPasswordPolicyDialog;
 import tr.org.liderahenk.password.i18n.Messages;
 
-public class PasswordTaskHandler extends MultipleSelectionHandler {
+public class AddPasswordPolicyHandler extends MultipleSelectionHandler {
 
 	@Override
 	public void executeWithDNSet(Set<String> dnSet) {
@@ -23,10 +23,9 @@ public class PasswordTaskHandler extends MultipleSelectionHandler {
 		}
 		
 		String selectedUser= LiderManagementEditor.selectedUserDn;
-
 		List<String> selectedUserList= LiderManagementEditor.selectedDnUserList;
 		
-		PasswordTaskDialog dialog = new PasswordTaskDialog(Display.getDefault().getActiveShell(), dnSet, selectedUser, selectedUserList);
+		AddPasswordPolicyDialog dialog = new AddPasswordPolicyDialog(Display.getDefault().getActiveShell(), dnSet, selectedUser,selectedUserList);
 		dialog.create();
 		dialog.open();
 	}

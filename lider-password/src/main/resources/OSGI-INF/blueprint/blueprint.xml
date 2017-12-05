@@ -36,6 +36,34 @@
 		<property name="ldapService" ref="ldapService" />
 	</bean>
 
-	<reference id="resultFactory" interface="tr.org.liderahenk.lider.core.api.service.ICommandResultFactory" />
-	<reference id="ldapService" interface="tr.org.liderahenk.lider.core.api.ldap.ILDAPService" />
+	<service ref="GetPasswordPoliciesCommand" interface="tr.org.liderahenk.lider.core.api.plugin.ICommand" />
+	<bean id="GetPasswordPoliciesCommand"
+		class="tr.org.liderahenk.password.commands.GetPasswordPoliciesCommand">
+		<property name="resultFactory" ref="resultFactory" />
+		<property name="pluginInfo" ref="pluginInfoImpl" />
+		<property name="ldapService" ref="ldapService" />
+		<property name="logService" ref="logService" />
+		<property name="configurationService" ref="configurationService" />
+	</bean>
+
+
+	<service ref="AddPasswordPolicyCommand" interface="tr.org.liderahenk.lider.core.api.plugin.ICommand" />
+	<bean id="AddPasswordPolicyCommand"
+		class="tr.org.liderahenk.password.commands.AddPasswordPolicyCommand">
+		<property name="resultFactory" ref="resultFactory" />
+		<property name="pluginInfo" ref="pluginInfoImpl" />
+		<property name="ldapService" ref="ldapService" />
+		<property name="logService" ref="logService" />
+		<property name="configurationService" ref="configurationService" />
+	</bean>
+
+	<reference id="resultFactory"
+		interface="tr.org.liderahenk.lider.core.api.service.ICommandResultFactory" />
+	<reference id="ldapService"
+		interface="tr.org.liderahenk.lider.core.api.ldap.ILDAPService" />
+	<reference id="logService"
+		interface="tr.org.liderahenk.lider.core.api.log.IOperationLogService" />
+		
+	<reference id="configurationService"
+		interface="tr.org.liderahenk.lider.core.api.configuration.IConfigurationService" />
 </blueprint>

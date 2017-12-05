@@ -8,4 +8,6 @@ public class PasswordConstants {
 
 	public static final String PASSWORD = "password";
 	
+	public static final String PASSWORD_POLICY = "password_policy";
+	
 }
