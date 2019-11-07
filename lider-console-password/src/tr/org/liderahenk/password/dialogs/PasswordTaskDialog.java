@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ListViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -27,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import tr.org.liderahenk.liderconsole.core.dialogs.DefaultLiderDialog;
+import tr.org.liderahenk.liderconsole.core.exceptions.ValidationException;
 import tr.org.liderahenk.liderconsole.core.ldap.enums.DNType;
 import tr.org.liderahenk.liderconsole.core.ldap.utils.LdapUtils;
 import tr.org.liderahenk.liderconsole.core.rest.enums.RestResponseStatus;
@@ -50,6 +52,12 @@ public class PasswordTaskDialog extends DefaultLiderDialog {
 	private static final Logger logger = LoggerFactory.getLogger(PasswordTaskDialog.class);
 	private Label lblPassword;
 	private Text txtPassword;
+	
+	private Label lblPasswordRepeat;
+	private Text txtPasswordRepeat;
+	
+	private Label lblPasswordRule;
+	
 	private ProgressBar progressBar;
 
 	private String selectedUser;
@@ -167,6 +175,18 @@ public class PasswordTaskDialog extends DefaultLiderDialog {
 		txtPassword = new Text(composite, SWT.BORDER | SWT.PASSWORD);
 		txtPassword.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true));
 
+		lblPasswordRepeat = new Label(composite, SWT.NONE);
+		lblPasswordRepeat.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, true, 1, 1));
+		lblPasswordRepeat.setText(Messages.getString("PASSWORD_REPEAT"));
+
+		txtPasswordRepeat = new Text(composite, SWT.BORDER | SWT.PASSWORD);
+		txtPasswordRepeat.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, true));
+		
+		
+		lblPasswordRule = new Label(composite, SWT.NONE);
+		lblPasswordRule.setText(Messages.getString("PASSWORD_RULE"));
+		lblPasswordRule.setLayoutData(new GridData(SWT.LEFT,SWT.LEFT,false,true,3,1));
+		
 		progressBar = new ProgressBar(composite, SWT.SMOOTH | SWT.INDETERMINATE);
 		progressBar.setSelection(0);
 		progressBar.setMaximum(100);
@@ -186,8 +206,22 @@ public class PasswordTaskDialog extends DefaultLiderDialog {
 		setReturnCode(OK);
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		if (txtPassword != null && txtPassword.getText() != null && !txtPassword.getText().isEmpty())
-			map.put(PasswordConstants.PASSWORD, txtPassword.getText().toString());
+		if ((txtPassword != null && txtPassword.getText() != null && !txtPassword.getText().isEmpty()) &&
+				(txtPasswordRepeat != null && txtPasswordRepeat.getText() != null && !txtPasswordRepeat.getText().isEmpty()))
+			if(txtPassword.getText().equals(txtPasswordRepeat.getText())) {
+				if(!txtPassword.getText().toString().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$")) {
+					Notifier.notifyandShow(null, "", Messages.getString("PASSWORD_RULE_ERROR"), "", NotifierTheme.ERROR_THEME);
+					return;
+				}
+				else {
+					map.put(PasswordConstants.PASSWORD, txtPassword.getText().toString());
+				}
+			}
+			else {
+				Notifier.notifyandShow(null, "", Messages.getString("PASSWORDS_MISMATCH"), "", NotifierTheme.ERROR_THEME);
+				return;
+			}
+			
 		else {
 			Notifier.notifyandShow(null, "", Messages.getString("ENTER_NEW_PASSWORD"), "", NotifierTheme.ERROR_THEME);
 			return;
