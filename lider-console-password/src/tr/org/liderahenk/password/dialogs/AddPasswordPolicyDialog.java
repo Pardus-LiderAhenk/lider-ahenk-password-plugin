@@ -136,33 +136,32 @@ public class AddPasswordPolicyDialog extends DefaultLiderDialog {
 
 		List<String> dnList = null;
 
-		if (selectedUser != null)
-
+		if (dnSet != null && !dnSet.isEmpty())
 		{
 			dnList = new ArrayList<>();
-			dnList.add(selectedUser);
+			
+			
+			dnList.addAll(dnSet);
 			
 			if (dnList != null && dnList.size() > 0) {
 
-				List<String> targetEntries = LdapUtils.getInstance().findUsers(dnList.get(0)); // secili
-																								// entry
-																								// nin
-																								// tum
-																								// child
-																								// entryleri
-																								// bulunur.
-
-				if (targetEntries.size() == 0)
-					targetEntries = LdapUtils.getInstance().findAgents(dnList.get(0)); // ahenkler
-																						// icin
-																						// ve
-																						// kullanıcılar
-																						// icin
-																						// gecerli
-																						// olabilir.
-
-				dnlistViewer.setInput(targetEntries);
-				lblDnInfo.setText(Messages.getString("selected_entry_size") + " : " + targetEntries.size());
+//				List<String> targetEntries = LdapUtils.getInstance().findUsers(dnList.get(0)); // secili
+//																								// entry
+//																								// nin
+//																								// tum
+//																								// child
+//																								// entryleri
+//																								// bulunur.
+//				if (targetEntries.size() == 0)
+//					targetEntries = LdapUtils.getInstance().findAgents(dnList.get(0)); // ahenkler
+//																						// icin
+//																						// ve
+//																						// kullanıcılar
+//																						// icin
+//																						// gecerli
+//																						// olabilir.
+				dnlistViewer.setInput(dnList);
+				lblDnInfo.setText(Messages.getString("selected_entry_size") + " : " + dnList.size());
 
 			}
 		}
@@ -296,16 +295,26 @@ public class AddPasswordPolicyDialog extends DefaultLiderDialog {
 	}
 
 	private List<String> getDnSet() {
+		
+		List<String> dnList = null;
 
-		if (selectedUser == null && selectedUserList!=null && selectedUserList.size()>0)
-			return selectedUserList;
-		else {
-
-			List<String> dnList = new ArrayList<>();
-			dnList.add(selectedUser);
-
-			return dnList;
+		if (dnSet != null && !dnSet.isEmpty())
+		{
+			dnList = new ArrayList<>();
+			dnList.addAll(dnSet);
 		}
+
+//		if (selectedUser == null && selectedUserList!=null && selectedUserList.size()>0)
+//			return selectedUserList;
+//		else {
+//
+//			List<String> dnList = new ArrayList<>();
+//			dnList.add(selectedUser);
+//		
+//
+//			return dnList;
+//		}
+		return dnList;
 	}
 
 	public Map<String, Object> getParameterMap() {

@@ -44,7 +44,8 @@ public class AddPasswordPolicyCommand implements ICommand {
 			for (String entryDn : dnList) {
 				//ldapService.updateEntryRemoveAttribute(entryDn, "pwdPolicySubentry");
 				
-				ldapService.updateEntryRemoveAttributeWithValue(entryDn, "pwdPolicySubentry", passwordPolicyDn);
+//				ldapService.updateEntryRemoveAttributeWithValue(entryDn, "pwdPolicySubentry", passwordPolicyDn);
+				ldapService.updateEntry(entryDn, "pwdPolicySubentry", passwordPolicyDn);
 			}
 			
 			
