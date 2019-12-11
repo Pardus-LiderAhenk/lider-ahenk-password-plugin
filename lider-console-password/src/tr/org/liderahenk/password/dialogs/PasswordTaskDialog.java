@@ -209,7 +209,7 @@ public class PasswordTaskDialog extends DefaultLiderDialog {
 		if ((txtPassword != null && txtPassword.getText() != null && !txtPassword.getText().isEmpty()) &&
 				(txtPasswordRepeat != null && txtPasswordRepeat.getText() != null && !txtPasswordRepeat.getText().isEmpty()))
 			if(txtPassword.getText().equals(txtPasswordRepeat.getText())) {
-				if(!txtPassword.getText().toString().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$")) {
+				if(!txtPassword.getText().toString().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{10,}$")) {
 					Notifier.notifyandShow(null, "", Messages.getString("PASSWORD_RULE_ERROR"), "", NotifierTheme.ERROR_THEME);
 					return;
 				}
